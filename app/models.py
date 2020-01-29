@@ -83,7 +83,7 @@ class CartItem(models.Model):
     item_total = models.DecimalField(max_digits=9, decimal_places=2, default=0.00)
 
     def __str__(self):
-        return f'Cart item for product {self.product.title}'
+        return f'Корзина с {self.product.title}'
 
     def change_quantity(self, quantity):
         cart_item = self
