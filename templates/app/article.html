@@ -1,0 +1,36 @@
+{% extends "_base.html" %}
+{% load staticfiles %}
+{% block title %}Article{% endblock %}
+
+{% block content %}
+<main role="main">
+  <div class="container mt-3">
+    <div class="row">
+
+      <div class="col-9">
+        <h1 class="display-4">{{ article.title }}</h1>
+        <p>Author: <small>{{ article.author }}</small></p>
+        <p>{{ article.text }}</p>
+      </div>
+      <div class="col-3">
+        {% for product in article.product.all %}
+        <div>
+          <a href="{{ product.get_absolute_url }}"><h2>{{ product.title }}</h2></a>
+
+          <a href="{{ product.get_absolute_url }}">
+            <img src="{% static product.image.url %}" width="180">
+          </a>
+          {% if request.user.is_authenticated %}
+            <form action="#">
+              <input type="submit" class="btn btn-secondary add-to-cart" data-slug="{{product.slug}}" value="Добавить в корзину »">
+            </form>
+          {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div> <!-- /container -->
+
+</main>
+{% include "includes/add_to_cart_script.html" %}
+{% endblock %}

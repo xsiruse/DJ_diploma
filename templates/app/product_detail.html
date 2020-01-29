@@ -1,0 +1,67 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block title %}Empty Section{% endblock %}
+
+{% block content %}
+<main role="main">
+
+
+  <div class="container mt-3">
+    <!-- Example row of columns -->
+    <div class="row">
+      <div class="col-md-12">
+        <h2>{{ product.title|title }}</h2>
+        <img src="{% static product.image.url %}" width="120">
+
+        <p>{{product.description}}</p>
+        {% if request.user.is_authenticated %}
+          <form method="post" action="#">
+            <input type="hidden" name="csrfmiddlewaretoken"
+                   value="N4vcBqzjoYkU7OTDuAT8hq8srpvYX44nJsswuP7e3EYg0Hq8DgxuR0eiXWbSr5RZ">
+            <input type="hidden" name="merchandise_id" value="1">
+            <input type="submit" class="btn btn-secondary add-to-cart" data-slug="{{product.slug}}" value="Добавить в корзину »">
+          </form>
+        {% else %}
+          <p>Вы не авторизованы! Чтобы продолжить покупки
+            <a href="{% url 'login' %}">войдите</a> или
+            <a href="{% url 'registration' %}">зарегистрируйтесь</a>.</p>
+        {% endif%}
+      </div>
+    </div>
+    <hr>
+    <h4>Отзывы:</h4>
+    {% for review in product.reviews.all %}
+    <span>
+      {% for i in i|rjust:review.rating %}★{% endfor %}
+    </span>
+    <span>{{ review.user.first_name }}</span>
+    <p>{{ review.text }}</p>
+    {% endfor%}
+    <hr>
+    <div class="row">
+      <div class="col-lg-6 col-md-8 col-sm-12">
+        <h4>Оставьте отзыв:</h4>
+
+        <form action="#" method="post">
+          {% csrf_token %}
+          <p>{{ form.text.label }}</p>
+          {{ form.text }}
+          <br>
+          <p>{{ form.rating.label }}</p>
+{#          {{ form.rating }}#}
+            <div class="rating">
+                {% for radio in form.rating %}
+                    {{ radio }}
+                {% endfor %}
+                <span></span>
+            </div>
+          <button type="submit" class="btn btn-primary">Оставить</button>
+        </form>
+      </div>
+    </div>
+
+  </div> <!-- /container -->
+
+</main>
+{% include "includes/add_to_cart_script.html" %}
+{% endblock %}

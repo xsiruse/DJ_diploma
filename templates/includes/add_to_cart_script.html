@@ -1,0 +1,20 @@
+<script>
+  window.addEventListener('load', e => {
+    buttons = document.querySelectorAll('.add-to-cart');
+
+    for (let btn of buttons) {
+      btn.addEventListener('click', e => {
+        e.preventDefault();
+        slug = e.target.dataset.slug;
+
+        fetch(`{% url 'add_to_cart' %}?slug=${slug}`, {
+          method: 'GET',
+        }).then((res) => {
+          return res.json();
+        }).then((data) => {
+
+        })
+      });
+    }
+  });
+</script>

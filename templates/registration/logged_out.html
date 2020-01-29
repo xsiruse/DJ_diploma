@@ -1,0 +1,16 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block title %}Авторизация{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="header"></div>
+        <h2>Вы вышли</h2>
+        <p>Вы можете:</p>
+        <div>
+            <span><a href="{% url 'home' %}"><< Вернуться на домашнюю</a></span> или
+            <span><a href="{% url 'login' %}">Авторизоваться снова</a> </span>
+        </div>
+    </div>
+{% endblock %}

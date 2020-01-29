@@ -1,0 +1,74 @@
+{% extends "_base.html" %}
+{% load staticfiles %}
+{% block title %}Graduation Work{% endblock %}
+
+{% block content %}
+<main role="main">
+
+  <div class="jumbotron">
+    <div class="container">
+      <h1 class="display-4">Добро пожаловать на сайт просто магазина</h1>
+      <p>Лучшие мобилы только у нас:</p>
+    </div>
+  </div>
+
+
+  <div class="container mb-5">
+    <!-- Example row of columns -->
+    <div class="row">
+      {% for phone in phones %}
+        <div class="col-md-4">
+          <a href="{{ phone.get_absolute_url }}"><h2>{{ phone.title }}</h2></a>
+
+          <a href="{{ phone.get_absolute_url }}">
+            <img src="{% static phone.image.url %}" width="180">
+          </a>
+          {% if request.user.is_authenticated %}
+            <form action="#">
+              <input type="submit" class="btn btn-secondary add-to-cart" data-slug="{{phone.slug}}" value="Добавить в корзину »">
+            </form>
+          {% endif %}
+        </div>
+      {% endfor%}
+    </div>
+  </div>
+
+  <div class="jumbotron">
+    {% for article in articles %}
+    <div class="container">
+      <h1 class="display-4"><a href="{{article.get_absolute_url}}">{{ article.title }}</a></h1>
+      <p>{{ article.text }}</p>
+      <p><small>Products:
+        {% for product in article.product.all%}
+        <a href="{{ product.get_absolute_url }}">{{ product.title }}</a>
+        {% if not forloop.last %},{% endif %}
+        {% endfor %}
+      </small></p>
+    </div>
+    {% if not forloop.last %}<hr>{% endif %}
+    {% endfor %}
+  </div>
+
+
+  <div class="container mb-5">
+    <!-- Example row of columns -->
+    <div class="row">
+      {% for product in other %}
+        <div class="col-md-4">
+          <a href="{{ product.get_absolute_url }}"><h2>{{ product.title }}</h2></a>
+          <a href="{{ product.get_absolute_url }}">
+            <img src="{% static product.image.url %}" width="180">
+          </a>
+          {% if request.user.is_authenticated %}
+            <form action="#">
+              <input type="submit" class="btn btn-secondary add-to-cart" data-slug="{{product.slug}}" value="Добавить в корзину »">
+            </form>
+          {% endif %}
+        </div>
+      {% endfor%}
+    </div>
+  </div> <!-- /container -->
+
+</main>
+{% include "includes/add_to_cart_script.html" %}
+{% endblock %}
