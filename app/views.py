@@ -19,7 +19,6 @@ def account_view(request):
         context['orders'] = Order.objects.filter(user=request.user).order_by('-pk')
     except:
         context['orders'] = None
-    context['categories'] = Category.objects.all()
     return render(request, 'app/account.html', context)
 
 
@@ -34,7 +33,6 @@ def main_view(request):
     context['phones'] = Product.objects.filter(category__title='phones')
     context['articles'] = Article.objects.all().order_by('-date')[:5]
     context['other'] = Product.objects.filter(category__title='other')
-    context['categories'] = Category.objects.all()
     return render(request, 'app/index.html', context)
 
 
@@ -42,7 +40,6 @@ def article_view(request, *args, **kwargs):
     context = {}
     slug = kwargs['slug']
     context['article'] = get_object_or_404(Article, slug=slug)
-    context['categories'] = Category.objects.all()
     return render(request, 'app/article.html', context)
 
 
@@ -52,7 +49,6 @@ def product_detail_view(request, *args, **kwargs):
     slug = kwargs['slug']
     product = get_object_or_404(Product, slug=slug)
     context['product'] = product
-    context['categories'] = Category.objects.all()
 
     form = ReviewForm(request.POST or None)
     context['form'] = form
@@ -62,7 +58,6 @@ def product_detail_view(request, *args, **kwargs):
         new_review.user = request.user
         new_review.rating = int(form.cleaned_data['rating'])
         new_review.save()
-
         new_review.product.add(product)
         new_review.save()
         new_review.text = form.cleaned_data['text']
@@ -74,10 +69,15 @@ def product_detail_view(request, *args, **kwargs):
 
 def products_of_category_view(request, *args, **kwargs):
     slug = kwargs['slug']
-
     context = {}
     context['products'] = Product.objects.filter(category__title__iexact=slug)
-    context['categories'] = Category.objects.all()
+    return render(request, 'app/products_of_category.html', context)
+
+
+def accessories_of_category_view(request, *args, **kwargs):
+    slug = kwargs['slug']
+    context = {}
+    context['products'] = Product.objects.filter(category__title__iexact=slug)
     return render(request, 'app/products_of_category.html', context)
 
 
@@ -100,7 +100,6 @@ def cart_session(request):
 def cart_view(request):
     context = {}
     context['cart'] = cart_session(request)
-    context['categories'] = Category.objects.all()
     return render(request, 'app/cart.html', context)
 
 
@@ -143,7 +142,6 @@ def change_item_quantity_view(request):
 def checkout_view(request):
     context = {}
     context['cart'] = cart_session(request)
-    context['categories'] = Category.objects.all()
     return render(request, 'app/checkout.html', context)
 
 
@@ -175,11 +173,9 @@ def order_create_view(request):
 
 def congratulations_view(request):
     context = {}
-    context['categories'] = Category.objects.all()
     return render(request, 'app/congratulations.html', context)
 
 
 def empty_section(request):
     context = {}
-    context['categories'] = Category.objects.all()
     return render(request, 'app/empty_section.html', context)

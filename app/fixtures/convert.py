@@ -13,6 +13,7 @@ def converter(file):
 
     for i, item in enumerate(data['data']):
         # print(i, item)
+
         fixture = {}
         fixture['model'] = 'app.product'
         fixture['pk'] = i + 1

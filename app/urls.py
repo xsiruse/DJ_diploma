@@ -11,12 +11,13 @@ from app.views import (main_view,
                        checkout_view,
                        order_create_view,
                        congratulations_view,
-                       article_view)
+                       article_view, accessories_of_category_view)
 
 urlpatterns = [
     path('', main_view, name='main_page'),
     path('category/<str:slug>/', products_of_category_view, name='category'),
     path('product/<str:slug>/', product_detail_view, name='product'),
+    path('accessories/<str:slug>/', accessories_of_category_view, name='accessories'),
     path('articles/<str:slug>/', article_view, name='article'),
     path('cart/', cart_view, name='cart'),
     path('cart/remove_from_cart/', remove_from_cart_view, name='remove_from_cart'),
